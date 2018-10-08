@@ -1,0 +1,30 @@
+extends layout
+
+block content
+
+  h1= title
+  p Welcome to #{title}
+  div
+    | Mukesh
+  div.
+   But that gets tedious if you have a lot of text.
+   You can use "." at the end of tag to denote block of text.
+   To put tags inside this block, simply enter tag in a new line and 
+   indent it accordingly.
+
+  
+  form(action = "/person", method = "POST")
+      br  
+      div
+        label(for = "name") Name : 
+        input(name = "name" placeholder = "Enter your name")
+      br
+      div
+        label(for = "age") Age : 
+        input(name = "age" placeholder = "Enter your age")
+      br  
+      div
+         label(for = "nationality") Nationality :  
+         input(name = "nationality" placeholder = "Enter your nationality")
+      br
+      button(type = "submit") Create New Person

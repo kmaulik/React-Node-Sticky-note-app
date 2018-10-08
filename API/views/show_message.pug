@@ -1,0 +1,15 @@
+html
+   head
+      title Person
+   body
+      if(type == "error")
+         h3(style = "color:red") #{message}
+         <a href="http://localhost:4000/show_all">Show All Records</a><br/>
+         <a href="http://localhost:4000/person">Add Another Record</a>
+      else
+         h3 "Added New Record"
+         p Name : #{person.name},
+         p age  : #{person.age } and 
+         p nationality : #{ person.nationality }
+         <a href="http://localhost:4000/show_all">Show All Records</a><br/>
+         <a href="http://localhost:4000/person">Add Another Record</a>

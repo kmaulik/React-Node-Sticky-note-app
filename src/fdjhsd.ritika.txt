@@ -1,0 +1,137 @@
+import React, { Component } from 'react';
+import {
+    Grid, Row, Col,
+    FormGroup, ControlLabel, FormControl
+} from 'react-bootstrap';
+import { Field, reduxForm, initialize } from "redux-form";
+
+import Loader from "../../components/Loader/Loader";
+import { Card } from 'components/Card/Card.jsx';
+import Button from 'elements/CustomButton/CustomButton.jsx';
+import _ from 'lodash';
+
+const required = value => value
+    ? undefined
+    : 'This Field Is Required.'
+const renderField = ({id ,input, label, type, meta: { touched, error, warning },disabled }) => {
+    const errorClass = ((touched) && error) ? 'form-group has-error' : 'form-group';
+    return (
+        <div className={errorClass}>
+            <label className="control-label">{label} <span className="required">*</span></label>
+            <input id={id} {...input} placeholder={label} type={type} className="form-control" disabled={disabled}/>
+            {touched && ((error && <p className="help-block">{error}</p>) || (warning && <p className="help-block">{warning}</p>))}
+        </div>
+    )
+}
+const renderFile = ({id,input,label,type}) => {
+    let newInput = _.omit(input, ['value'])
+return (
+    <div>
+     <label className="control-label"> {label} </label>   
+     <input id={id} {...newInput} type={type}  className="form-control"/>
+     </div>
+    )
+}
+ 
+let CarCategories = (props) => {
+    //console.log('Property',props);
+    const { handleSubmit, pristine, reset, submitting } = props
+   
+    return (
+        <Grid fluid>         
+            <Row>
+                <Col md={8} mdOffset={2}>
+                    <Card
+                        title="Add Category"
+                        content={
+                            <form id="carCategories" onSubmit={handleSubmit(props.onSubmit)} method="post" encType="multipart/form-data" >
+                                <Row>
+                                    <div className="col-md-8">
+                                        <Field
+                                            id="name"
+                                            name="category_name"                                           
+                                            label="Category Name"
+                                            type="text"
+                                            component={renderField}
+                                            validate={[required]}
+                                        />
+                                        <Field 
+                                        id="image"
+                                        name="file"
+                                        type="file"
+                                        name="image"
+                                        label="Category Image"
+                                        component= {renderFile} />
+                                    </div>
+                                    <div className="col-md-4"> 
+                                    <a href="/admin/#/car-categories" className="btn btn-primary pull-right">Back To Car Categories </a>
+                                    </div>
+                                </Row>
+                                <button type="submit" className="btn-fill pull-right btn btn-info">Add</button>
+                                <div className="clearfix"></div>
+                            </form>
+                        }
+                    />
+                </Col>
+            </Row>
+        </Grid>
+    )
+}
+CarCategories = reduxForm({
+    form: 'categoriesForm',
+    enableReinitialize: true
+})(CarCategories)
+
+export default CarCategories;
+
+--------------------------------------------------------------------------------------
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+======================================================================================
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+--------------------------------------------------------------------------------------
+
+(10:41) rip: import React, {Component} from 'react'
+import {
+    Grid, Row, Col,
+    FormGroup, ControlLabel, FormControl
+} from 'react-bootstrap';
+
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+
+import NotificationSystem from 'react-notification-system';
+import * as adminActions from "../../actions/adminAction";
+import CarCategories from '../../views/CarsMaster/AddCategory';
+import { Card } from 'components/Card/Card.jsx';
+import carApi from "api/carApi";
+import {postCarsCategory} from "../../actions/carCategoryAction";
+class AddCategories extends Component {
+
+    onSubmit = (values) => {
+
+        this.props.postCarsCategory(values,()=>{
+            this.props.history.push('/car-categories');
+        });
+       
+    }
+    render() {
+        return (
+            <div className="content">
+                <Grid fluid>
+                    <Row>
+                        <Col md={12}>
+                        <CarCategories onSubmit={this.onSubmit}/>
+                        </Col>
+                    </Row>
+                </Grid>
+            </div>
+        );
+    }
+}
+
+function mapStateToProps({carsCategory}) {
+    return {carsCategory}
+}
+export default connect(mapStateToProps, {postCarsCategory})(AddCategories) 
+
+
