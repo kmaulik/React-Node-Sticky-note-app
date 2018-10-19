@@ -2,7 +2,7 @@
 
 Sticky Notes for React Application (Summernote Based)
 
-![Stickies](https://github.com/kmaulik/React-Sticky-note-web/blob/master/react-sticky-note-image.jpg)
+![Stickies](https://github.com/kmaulik/React-Node-Sticky-note-app/blob/master/react-sticky-note-image.jpg)
 > Screencast of stickies
 
 ## Installation
